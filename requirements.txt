@@ -1,0 +1,4 @@
+# Use Command: pip3 install -r requirements.txt
+# to install dependencies
+Crypto==2.6.1
+Tkinter==2.7
