@@ -1,6 +1,6 @@
 #!usr/bin/python
 
-from tkinter import *
+from Tkinter import *
 
 class Key_It:
     def __init__(self, master):
@@ -36,6 +36,6 @@ class Key_It:
         #             Initiate decryption and retrieval
         #             Open up account info
 
-root = Tk()
-my_gui = MyFirstGUI(root)
-root.mainloop()
+        root = Tk()
+        my_gui = MyFirstGUI(root)
+        root.mainloop()
