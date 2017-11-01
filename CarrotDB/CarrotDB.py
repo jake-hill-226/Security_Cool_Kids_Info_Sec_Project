@@ -15,7 +15,7 @@ def connect(path='data/carrot'):
 # Disconnect from database
 # Note:
 # Run this last and always run!
-def disonnect():
+def disconnect():
 	try:
 		CarrotDB.c.close()
 		CarrotDB.conn.close()
@@ -177,8 +177,8 @@ class User():
 			self.reset()
 
 	def display(self): # display user info
-		print "Current Value\nrow_id: %d\nusername: %s\npassword: %s\nauth_options: %s\nemail: %s\nphone: %s\n" % (self.row_id, self.username, self.password, self.auth_options, self.email, self.phone)
-		print "Old Value\nrow_id: %d\nusername: %s\npassword: %s\nauth_options: %s\nemail: %s\nphone: %s\n" % (self.row_id_old, self.username-old, self.password_old, self.auth_options_old, self.email_old, self.phone_old)
+		print "Current Value\nrow_id: %s\nusername: %s\npassword: %s\nauth_options: %s\nemail: %s\nphone: %s\n" % (self.row_id, self.username, self.password, self.auth_options, self.email, self.phone)
+		print "Old Value\nrow_id: %s\nusername: %s\npassword: %s\nauth_options: %s\nemail: %s\nphone: %s\n" % (self.row_id_old, self.username_old, self.password_old, self.auth_options_old, self.email_old, self.phone_old)
 
 	# Description:
 	# Return a LIST of object Entry, filtered by "search"
@@ -242,9 +242,38 @@ class Entry():
 		self.password_old = self.password
 		self.details_old = self.details
 
-	# You are not supposed to fetch an entry directly
+	# Description:
+	# Use entry_id or (user_id, url) to fetch an entry
+	# Req:
+	# self.entry_id or (self.user_id, self.url)
 	def fetch(self):
-		pass
+		
+		if (self.entry_id != None):
+			query = "SELECT * FROM vaults WHERE entry_id=?"
+			params = (self.entry_id,)
+		elif (self.user_id != None and self.url != None):
+			query = "SELECT * FROM vaults WHERE user_id=? AND url=?"
+			params = (self.user_id, self.url)
+		else:
+			print "entry_id or (user_id, url) required for fetch()"
+			return None
+
+		CarrotDB.c.execute(query,params)
+		row = CarrotDB.c.fetchone()
+		if (row == None):
+			print "entry " + str(params) + " is not found"
+			return None
+		else:
+			self.entry_id = row[0]
+			self.user_id = row[1]
+			self.url = row[2]
+			self.username = row[3]
+			self.password = row[4]
+			self.details = row[5]
+			# update old values too
+			self.copy_to_old()
+			print row
+
 
 	# Description:
 	# Insert a new entry into database for user. After success, entry_id is assigned
@@ -298,22 +327,26 @@ class Entry():
 			print "url, username, password required for update()"
 			return None
 
+		# check ownership 1
 		if (self.user_id != self.user_id_old):
 			self.user_id = self.user_id_old
+			print "you cannot change the owner of a vault entry"
+			return None
 
-		# check ownership
+		# check ownership 2
 		CarrotDB.c.execute('SELECT user_id FROM vaults WHERE entry_id=?', (self.entry_id,))
 		(result,) = CarrotDB.c.fetchone()
 		if (result != self.user_id):
 			print "user_id doesn't match entry_id"
 			return None
 
-		# check uniqueness
-		CarrotDB.c.execute('SELECT COUNT(*) FROM vaults WHERE user_id=? AND url=?', (self.user_id, self.url))
-		(num_rows,) = CarrotDB.c.fetchone()
-		if (num_rows > 0):
-			print "entry (%d, %s) already exists" % (self.user_id, self.url)
-			return None
+		# check url uniqueness if changed
+		if (self.url != self.url_old):
+			CarrotDB.c.execute('SELECT COUNT(*) FROM vaults WHERE user_id=? AND url=?', (self.user_id, self.url))
+			(num_rows,) = CarrotDB.c.fetchone()
+			if (num_rows > 0):
+				print "entry (%d, %s) already exists" % (self.user_id, self.url)
+				return None
 
 		# update
 		CarrotDB.c.execute('UPDATE vaults SET url=?, username=?, password=?, details=? WHERE entry_id=?',
@@ -329,7 +362,6 @@ class Entry():
 	# Req:
 	# self.entry_id
 	# Node:
-	# After deletion, entry variable is no longer usable since there's no fetch function
 	# If entry is in a list, for example, fetched from user.getVault(), remove this entry from that list!
 	def delete(self):
 		
@@ -345,8 +377,8 @@ class Entry():
 			self.reset()
 
 	def display(self): # display entry info
-		print "Current Value\nentry_id: %d\nuser_id: %d\nurl: %s\nusername: %s\npassword: %s\ndetails: %s" % (self.entry_id, self.user_id, self.url, self.username, self.password, self.details)
-		print "Old Value\nentry_id: %d\nuser_id: %d\nurl: %s\nusername: %s\npassword: %s\ndetails: %s" % (self.entry_id_old, self.user_id_old, self.url_old, self.username_old, self.password_old, self.details_old)
+		print "Current Value\nentry_id: %s\nuser_id: %s\nurl: %s\nusername: %s\npassword: %s\ndetails: %s\n" % (self.entry_id, self.user_id, self.url, self.username, self.password, self.details)
+		print "Old Value\nentry_id: %s\nuser_id: %s\nurl: %s\nusername: %s\npassword: %s\ndetails: %s\n" % (self.entry_id_old, self.user_id_old, self.url_old, self.username_old, self.password_old, self.details_old)
 
 
 # testing
