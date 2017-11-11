@@ -140,7 +140,8 @@ def auto_change_password(login_url, acct_username, acct_password, new_pass):
 
 # Testing methods
 
-login_url = "https://facebook.com"
+fb_login_url = "https://facebook.com"
+g_login_url =
 username = "secCoolKids@gmail.com"
 fb_password = "holycowbatman123"
 g_password = "supersecret"
