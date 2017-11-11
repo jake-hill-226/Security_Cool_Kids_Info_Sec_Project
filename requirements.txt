@@ -2,3 +2,4 @@
 # to install dependencies
 Crypto==2.6.1
 Tkinter==2.7
+splinter==0.7.7
