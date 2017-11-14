@@ -163,7 +163,7 @@ class AES(object):
         return result
 
     def decrypt(self, ciphertext):
-        'Decrypt a block of cipher text using the AES block cipher.'
+       #Decrypt a block of cipher text using the AES block cipher.
 
         if len(ciphertext) != 16:
             raise ValueError('wrong block length')
@@ -234,10 +234,10 @@ class AESBlockModeOfOperation(object):
         raise Exception('not implemented')
 
 class AESStreamModeOfOperation(AESBlockModeOfOperation):
-    '''Super-class for AES modes of operation that are stream-ciphers.'''
+    #Super-class for AES modes of operation that are stream-ciphers.
 
 class AESModeOfOperationCTR(AESStreamModeOfOperation):
-    '''AES Counter Mode of Operation.'''
+    #AES Counter Mode of Operation.
 
     def __init__(self, key, counter = None):
         AESBlockModeOfOperation.__init__(self, key)
@@ -261,7 +261,7 @@ class AESModeOfOperationCTR(AESStreamModeOfOperation):
         return _bytes_to_string(encrypted)
 
     def decrypt(self, crypttext):
-        # AES-CTR is symetric
+        # AES-CTR is symmetric soooo
         return self.encrypt(crypttext)
 
 def check_key (password):
