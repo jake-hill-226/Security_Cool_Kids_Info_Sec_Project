@@ -47,7 +47,7 @@ def retrieve_pass(username, url, password):
 	       # key = pwd
 	#Create AES stream object
  	#aes = carrot_encrypt.AESModeOfOperationCTR(key)
-    	#plaintext = aes.decrypt(key, pwd)
+    	#plaintext = aes.decrypt(pwd)
 	
 	# decrypt stored password with user credentials
 	vault_pass = vault_encrypt.decrypt(entry.password, password)
