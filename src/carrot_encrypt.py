@@ -289,15 +289,19 @@ def fit_key(password):
         return password
     else:
         raise ValueError('Invalid Password Length')
+# This is to test 
 def main():
     pwd = raw_input("Enter in the password to be encrypted: ")
+    #Check length to see if pwd can be key, if not pad it
     if (not(check_key(pwd))):
         key = fit_key(pwd)
     else:
         key = pwd
+     #Create AES stream object
     aes = AESModeOfOperationCTR(key)
     ciphertext = aes.encrypt(pwd)
     print(ciphertext)
+    #object saves state so need a new object to decrypt
     aes_2 = AESModeOfOperationCTR(key)
     plain = aes_2.decrypt(ciphertext)
     print (plain)
