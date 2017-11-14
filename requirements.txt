@@ -4,3 +4,4 @@ PyCryptodome>=3.4.7
 # hashlib --Part of base python lib
 # Tkinter==2.7 --Part of the base python lib
 splinter==0.7.7
+pyautogui>=0.9.36

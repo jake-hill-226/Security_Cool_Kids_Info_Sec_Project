@@ -1,7 +1,6 @@
 import CarrotDB
 import vault_encrypt
 from Headless_Browser import Auto_PW_Change
-import ctypes, time
 from pyautogui import press, typewrite, hotkey
 
 def setup():
