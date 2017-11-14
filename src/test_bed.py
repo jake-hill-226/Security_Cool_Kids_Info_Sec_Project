@@ -26,18 +26,27 @@
 
 # print plaintext
 
-import vault_encrypt
+##############################################################
 
-password = "secret"
+# import vault_encrypt
 
-new_pass = vault_encrypt.pwd_gen()
+# password = "secret"
 
-print "New Pass: " + new_pass
+# new_pass = vault_encrypt.pwd_gen()
 
-cipher_pass = vault_encrypt.encrypt(new_pass, password)
+# print "New Pass: " + new_pass
 
-print "Cipher Pass: " + cipher_pass
+# cipher_pass = vault_encrypt.encrypt(new_pass, password)
 
-plain_pass = vault_encrypt.decrypt(cipher_pass, password)
+# print "Cipher Pass: " + cipher_pass
 
-print "Plain Pass: " + plain_pass
+# plain_pass = vault_encrypt.decrypt(cipher_pass, password)
+
+# print "Plain Pass: " + plain_pass
+
+##############################################################
+
+import controller
+
+controller.sim_Alt_Tab()
+controller.sim_typing("this is a test")

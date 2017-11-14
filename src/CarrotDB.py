@@ -273,6 +273,7 @@ class Entry():
 			# update old values too
 			self.copy_to_old()
 			print row
+		return True
 
 
 	# Description:
@@ -340,13 +341,16 @@ class Entry():
 			print "user_id doesn't match entry_id"
 			return None
 
+		# Do not need below because I need this func to change
+		# an existing password (i.e. the url will be the same).
+
 		# check url uniqueness if changed
-		if (self.url != self.url_old):
-			CarrotDB.c.execute('SELECT COUNT(*) FROM vaults WHERE user_id=? AND url=?', (self.user_id, self.url))
-			(num_rows,) = CarrotDB.c.fetchone()
-			if (num_rows > 0):
-				print "entry (%d, %s) already exists" % (self.user_id, self.url)
-				return None
+		# if (self.url != self.url_old):
+		# 	CarrotDB.c.execute('SELECT COUNT(*) FROM vaults WHERE user_id=? AND url=?', (self.user_id, self.url))
+		# 	(num_rows,) = CarrotDB.c.fetchone()
+		# 	if (num_rows > 0):
+		# 		print "entry (%d, %s) already exists" % (self.user_id, self.url)
+		# 		return None
 
 		# update
 		CarrotDB.c.execute('UPDATE vaults SET url=?, username=?, password=?, details=? WHERE entry_id=?',
