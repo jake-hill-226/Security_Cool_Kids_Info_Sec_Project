@@ -1,4 +1,5 @@
 import CarrotDB
+import carrot_encrypt
 import vault_encrypt
 from Headless_Browser import Auto_PW_Change
 from pyautogui import press, typewrite, hotkey
@@ -39,6 +40,15 @@ def retrieve_pass(username, url, password):
 	entry.url = url
 	entry.fetch()
 
+	#
+	#if (not(carrot_encrypt.check_key(pwd))):
+		#key = carrot_encrypt.fit_key(pwd)
+	#else:
+	       # key = pwd
+	#Create AES stream object
+ 	#aes = carrot_encrypt.AESModeOfOperationCTR(key)
+    	#plaintext = aes.decrypt(key, pwd)
+	
 	# decrypt stored password with user credentials
 	vault_pass = vault_encrypt.decrypt(entry.password, password)
 
@@ -82,6 +92,14 @@ def store_new_pass(username, url, password, details="N/A"):
 		else:
 			new_pass = vault_encrypt.pwd_gen()
 
+			#
+			#if (not(carrot_encrypt.check_key(pwd))):
+			        #key = carrot_encrypt.fit_key(pwd)
+			#else:
+			       # key = pwd
+			#Create AES stream object
+ 			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
+    			#ciphertext = aes.encrypt(pwd)
 			encrypt_pass = vault_encrypt.encrypt(new_pass, password)
 
 			entry.password = encrypt_pass
@@ -127,6 +145,13 @@ def update_pass(username, url, password, new_pass=None):
 			if(new_pass == None):
 				new_pass = vault_encrypt.pwd_gen()
 
+			#if (not(carrot_encrypt.check_key(pwd))):
+			        #key = carrot_encrypt.fit_key(pwd)
+			#else:
+			       # key = pwd
+			#Create AES stream object
+ 			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
+    			#ciphertext = aes.encrypt(pwd)
 			new_pass = vault_encrypt.encrypt(new_pass, password)
 
 			entry.password = new_pass
