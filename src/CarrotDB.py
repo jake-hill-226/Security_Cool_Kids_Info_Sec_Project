@@ -83,7 +83,7 @@ class User():
 			# update old values too
 			self.copy_to_old()
 			print row
-
+		return True
 	# Description:
 	# Insert new user into database. After success, row_id is assigned
 	# Req:
