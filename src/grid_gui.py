@@ -15,7 +15,7 @@ class Account(tk.Tk):
         self.canvas.grid(column=0, row=1, padx=15, pady=15)
         self.rows = 10
         self.columns = 10
-        self.cellwidth = 100
+        self.cellwidth = 150
         self.cellheight = 25
 
         self.auth_username = username
@@ -44,6 +44,7 @@ class Account(tk.Tk):
         self.plusi.grid(column=1, row=2, padx=25, pady=25)
         self.settings.grid(column=1, row=0, sticky="ne", padx=(0, 25), pady=(25,0))
         self.settings.bind("<Button-1>", open_settings)
+        self.plusi.bind("<Button-1>", add_password)
 
 
 def buildTable(self, username, password):
@@ -92,8 +93,8 @@ def buildTable(self, username, password):
                     content = controller.retrieve_pass(entries[row-1].username, entries[row-1].url, password)
                     self.pwd.append(content)
                     tag = str(row) + '-pwd'
-
-                self.canvas.create_text((xC, yC), text=content, tags=tag)
+                con = trim_text(content)
+                self.canvas.create_text((xC, yC), text=con, tags=tag)
             if column == 4 and row != 0:
                 #this ought to be a button
                 self.rect[row,column] = self.canvas.create_rectangle(
@@ -114,3 +115,11 @@ def on_copy_click(self, event, row):
 
 def open_settings(event):
     print "settings open"
+
+def add_password(event):
+    print "add new password"
+
+def trim_text(text):
+    if len(text) > 15:
+        text = text[:12] + '...'
+    return text
