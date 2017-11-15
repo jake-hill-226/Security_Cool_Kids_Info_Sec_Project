@@ -75,13 +75,6 @@ def buildTable(self, username, password):
                 self.rect[row,column] = self.canvas.create_rectangle(
                     x1,y1,x2,y2, fill="white", tags="rect", outline="grey"
                 )
-
-            if column == 4:
-                #this ought to be a button
-                self.rect[row,column] = tk.Button(self);
-                self.rect[row,column].grid(column=0, row=row)
-
-
                 content = None
                 if column == 1:
                     content = entries[row - 1].url
@@ -91,6 +84,11 @@ def buildTable(self, username, password):
                     content = controller.retrieve_pass(entries[row-1].username, entries[row-1].url, password)
 
                 self.canvas.create_text((xC, yC), text=content)
+
+            if column == 4:
+                #this ought to be a button
+                self.rect[row,column] = tk.Button(self);
+                self.rect[row,column].grid(column=0, row=row)
 
 
 def popup(title, text, style):
