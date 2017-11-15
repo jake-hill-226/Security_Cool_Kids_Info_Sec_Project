@@ -9,9 +9,9 @@
 
 # print nonce
 
-# message = b"supersecret message!!"
+# message = b"didyousaywaffles"
 
-# ciphertext = nonce + cipher.encrypt("supersecret message!!")
+# ciphertext = nonce + cipher.encrypt(message)
 
 
 # print ciphertext
@@ -29,6 +29,7 @@
 ##############################################################
 
 import vault_encrypt
+import binascii
 
 password = "secret"
 
@@ -39,6 +40,7 @@ print "New Pass: " + new_pass
 cipher_pass = vault_encrypt.encrypt(new_pass, password)
 
 print "Cipher Pass: " + cipher_pass
+print "Cipher Pass Hex: " + binascii.unhexlify(binascii.hexlify(cipher_pass))
 
 plain_pass = vault_encrypt.decrypt(cipher_pass, password)
 

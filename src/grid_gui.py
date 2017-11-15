@@ -94,4 +94,3 @@ def buildTable(self, username, password):
                     content = controller.retrieve_pass(entries[row-1].username, entries[row-1].url, password)
 
                 self.canvas.create_text((xC, yC), text=content)
-
