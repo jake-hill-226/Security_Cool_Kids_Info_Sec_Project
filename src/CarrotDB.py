@@ -262,7 +262,7 @@ class Entry():
 		row = CarrotDB.c.fetchone()
 		if (row == None):
 			print "entry " + str(params) + " is not found"
-			return None
+			return False
 		else:
 			self.entry_id = row[0]
 			self.user_id = row[1]

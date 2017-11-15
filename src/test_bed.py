@@ -46,7 +46,19 @@
 
 ##############################################################
 
+# import controller
+
+# controller.sim_Alt_Tab()
+# controller.sim_typing("this is a test")
+
+##############################################################
+
 import controller
 
-controller.sim_Alt_Tab()
-controller.sim_typing("this is a test")
+username = "jake"
+password = "temp"
+
+pass_list = controller.search_vault(username)
+
+for p in pass_list:
+	p.display()

@@ -29,6 +29,8 @@ def create_new_user(username, password, auth_options, email=None, phone=None):
 	if phone:
 		user.phone = phone
 
+	user.insert()
+
 def update_user_prefs(username, new_username=None, password=None, auth_options=None, email=None, phone=None):
 	CarrotDB.conntect()
 
@@ -86,7 +88,8 @@ def retrieve_pass(username, url, password):
     	#plaintext = aes.decrypt(pwd)
 	
 	# decrypt stored password with user credentials
-	vault_pass = vault_encrypt.decrypt(entry.password, password)
+	if entry.password:
+		vault_pass = vault_encrypt.decrypt(entry.password, password)
 
 	CarrotDB.disconnect()
 
@@ -113,6 +116,8 @@ def store_new_pass(username, url, password, details="N/A"):
 	user = CarrotDB.User()
 	user.username = username
 	user.fetch()
+
+	print "user fetched"
 	if not user.fetch():
 		result = None
 	else:
@@ -123,10 +128,14 @@ def store_new_pass(username, url, password, details="N/A"):
 		entry.username = username
 		entry.details = details
 
+		print "before conditional"
+
 		if not entry.fetch():
 			result = None
+			print "entry exists"
 		else:
 			new_pass = vault_encrypt.pwd_gen()
+			print "entry does not exist"
 
 			#
 			#if (not(carrot_encrypt.check_key(pwd))):
@@ -214,6 +223,8 @@ def search_vault(username, search_string=None):
 	user.fetch()
 
 	results = user.getVault(search=search_string)
+
+	CarrotDB.disconnect()
 
 	return results
 

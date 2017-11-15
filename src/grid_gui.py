@@ -4,9 +4,11 @@ import tkFont
 import Tkinter as tk
 import ctypes
 from PIL import Image, ImageTk
+import controller
+
 
 class Account(tk.Tk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, username, password, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.grid()
         self.canvas = tk.Canvas(self, width=1000, height=500, borderwidth=0, highlightthickness=0)
@@ -16,13 +18,16 @@ class Account(tk.Tk):
         self.cellwidth = 100
         self.cellheight = 25
 
+        self.auth_username = username
+        self.auth_pwd = password
+
         self.headerfont = tkFont.Font(family="futura", size=32)
 
         welcomelabel = tk.Label(self, text="Dashboard", anchor="ne"
                                      , fg ="black", font=self.headerfont)
         welcomelabel.grid(pady=10, 
                           padx=15, column=0, row=0) 
-        buildTable(self)
+        buildTable(self,username, password)
         self.logoutimg = ImageTk.PhotoImage(Image.open("../assets/logout.png").resize((100,50)))
         self.settingsimg =  ImageTk.PhotoImage(Image.open("../assets/settings.png").resize((50,50)))
         self.settings = tk.Label(image= self.settingsimg)
@@ -30,11 +35,13 @@ class Account(tk.Tk):
 
         self.settings.grid(column=0, row=1, sticky="ne")
  
-def buildTable(self):
+def buildTable(self, username, password):
+    entries = controller.search_vault(username)
+
     header = ["", "Account", "Username", "Password"]
     self.rect = {}
     for column in range(4):
-        for row in range(1):
+        for row in range(len(entries) + 1):
             x1 = column * self.cellwidth
             y1 = row * self.cellheight
             x2 = x1 + self.cellwidth
@@ -52,12 +59,24 @@ def buildTable(self):
                 self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, fill="orange", tags="rect")
                 self.canvas.create_text((xC, yC), text=header[column])
             else: 
-               self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, fill="white", tags="rect")
+                self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, fill="white", tags="rect")
+
+
+                content = None
+                if column == 2:
+                    content = entries[row - 1].url
+                elif column == 3:
+                    content = entries[row - 1].username
+                elif column == 4:
+                    content = controller.retrieve_pass(entries[row].username, entries[row].url, password)
+
+                self.canvas.create_text((xC, yC), text=content)
+
 
 def popup(title, text, style):
     return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
 if __name__ == "__main__":
-    acc = Account()
+    acc = Account("jake", "temp")
     acc.title('CarrotKey')
     acc.mainloop()
