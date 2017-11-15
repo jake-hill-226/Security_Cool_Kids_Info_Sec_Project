@@ -68,7 +68,7 @@ def change_facebook_password(acct_username, acct_password, new_pass):
 		browser.quit()
 		return
 
-	browser.quit()
+	#browser.quit()
 	print "Password Successfully Changed for Facebook"
 
 def change_google_password(acct_username, acct_password, new_pass):
@@ -112,23 +112,23 @@ def change_google_password(acct_username, acct_password, new_pass):
 		print "Error: failed to submit new password"
 
 	raw_input("<press enter to close session>")
-	browser.quit()
+	#browser.quit()
 
 
 def auto_change_password(login_url, acct_username, acct_password, new_pass):
-	url_file = open("supported_websites.txt", "r")
+	#url_file = open("supported_websites.txt", "r")
 
-	supported_list = []
+	# supported_list = []
 
-	for line in url_file:
-		line.replace("\n", "");
-		supported_list.append(line)
+	# for line in url_file:
+	# 	line.replace("\n", "");
+	# 	supported_list.append(line)
 
-	url_file.close()
+	# url_file.close()
 
-	if login_url not in supported_list:
-		print "Sorry this website is unsupported\n"
-		return
+	# if login_url not in supported_list:
+	# 	print "Sorry this website is unsupported\n"
+	# 	return
 
 	if login_url == "https://facebook.com":
 		change_facebook_password(acct_username, acct_password, new_pass)
