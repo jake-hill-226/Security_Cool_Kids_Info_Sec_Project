@@ -2,6 +2,7 @@ import CarrotDB
 import vault_encrypt
 from Headless_Browser import Auto_PW_Change
 from pyautogui import press, typewrite, hotkey
+import re
 
 def setup():
 	# Prompt User for login credentials
@@ -13,6 +14,41 @@ def setup():
 	# Prompt User to enter new passwords to vault
 
 	return None
+
+def create_new_user(username, password, auth_options, email=None, phone=None):
+	CarrotDB.conntect()
+
+	# grab user credentials
+	user = CarrotDB.User()
+	user.username = username
+	user.password = password
+	user.auth_options = auth_options
+	if email:
+		user.email = email
+	if phone:
+		user.phone = phone
+
+def update_user_prefs(username, new_username=None, password=None, auth_options=None, email=None, phone=None):
+	CarrotDB.conntect()
+
+	# grab user credentials
+	user = CarrotDB.User()
+	user.username = username
+	user.fetch()
+
+	if password:
+		user.password = vault_encrypt.hash_usr_pwd(password)
+	if auth_options:
+		user.auth_options = auth_options
+	if email and re.search('^.*@.*\....$', email):
+		user.email = email
+	else:
+		print "Error: invalid email format. Attribute not updated in database"
+	if phone and re.search('^\d\d\d-\d\d\d-\d\d\d\d$', phone):
+		user.phone = phone
+	else:
+		print "Error: invalid phone number format. Attribute not updated in database"
+	CarrotDB.disconnect()
 
 """
 # Used to obtain plaintext password from database

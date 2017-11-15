@@ -4,6 +4,7 @@ from Crypto.Cipher import AES
 from Crypto.Hash import SHA512
 import random
 import CarrotDB
+import smtplib
 
 
 chars = 'abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()'
@@ -45,11 +46,15 @@ def auth_user(user_name, password):
     result = False
 
     if user.fetch():
-        db_pass_hash = SHA512.new(data=user.password)
+        db_pass_hash = user.password
         test_pass_hash = SHA512.new(data=password)
 
-        if db_pass_hash.hexdigest() == test_pass_hash.hexdigest():
+        if db_pass_hash == test_pass_hash.hexdigest():
             result = True
 
     CarrotDB.disconnect()
     return result
+
+def hash_user_pwd(password):
+    return SHA512.new(data=password).hexdigest()
+
