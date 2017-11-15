@@ -6,8 +6,9 @@ import sqlite3
 # Run this first!
 def connect(path='data/carrot'):
 	try:
-		CarrotDB.conn = sqlite3.connect(path)
-		CarrotDB.c = CarrotDB.conn.cursor()
+		if (CarrotDB.conn == None and CarrotDB.c == None):
+			CarrotDB.conn = sqlite3.connect(path)
+			CarrotDB.c = CarrotDB.conn.cursor()
 	except Exception as e:
 		print(e)
 
@@ -17,8 +18,12 @@ def connect(path='data/carrot'):
 # Run this last and always run!
 def disconnect():
 	try:
-		CarrotDB.c.close()
-		CarrotDB.conn.close()
+		if (CarrotDB.c != None):
+			CarrotDB.c.close()
+			CarrotDB.c = None
+		if (CarrotDB.conn != None):
+			CarrotDB.conn.close()
+			CarrotDB.conn = None
 	except Exception as e:
 		print(e)
 
