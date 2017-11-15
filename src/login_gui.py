@@ -5,6 +5,7 @@ import tkFont
 from PIL import Image, ImageTk
 import ctypes
 import grid_gui
+import vault_encrypt as vault
 
 class login_gui(tk.Tk):
 
@@ -35,11 +36,11 @@ class login_gui(tk.Tk):
         passwordlabel.grid(column=0, row=4, columnspan=2, sticky="EW", pady=pad)
 
         #username entry field
-        self.entry = tk.Entry(self)
-        self.entry.grid(column=0, row=3, sticky="N")
+        self.username = tk.Entry(self)
+        self.username.grid(column=0, row=3, sticky="N")
         #password entry field
-        self.entry = tk.Entry(self, show=u"*")
-        self.entry.grid(column=0, row=5, sticky='N')
+        self.password = tk.Entry(self, show=u"*")
+        self.password.grid(column=0, row=5, sticky='N')
 
         self.button = tk.Button(self)
         self.button["text"] ="Login"
@@ -51,7 +52,7 @@ class login_gui(tk.Tk):
         self.resizable(False,False)
 
     def checkAuth(self):
-        auth = False
+        auth = vault.auth_user(self.username.get(), self.password.get())
         if not auth:
             self.onDeny()
         else:
