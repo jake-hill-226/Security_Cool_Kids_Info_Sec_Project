@@ -4,6 +4,7 @@ import vault_encrypt
 from Headless_Browser import Auto_PW_Change
 from pyautogui import press, typewrite, hotkey
 import re
+import binascii
 
 def setup():
 	# Prompt User for login credentials
@@ -89,7 +90,8 @@ def retrieve_pass(username, url, password):
 	
 	# decrypt stored password with user credentials
 	if entry.password:
-		vault_pass = vault_encrypt.decrypt(entry.password, password)
+		byte_pass = binascii.unhexlify(entry.password).encode('utf-8')
+		vault_pass = vault_encrypt.decrypt(byte_pass, password)
 
 	CarrotDB.disconnect()
 
@@ -128,24 +130,21 @@ def store_new_pass(username, url, password, details="N/A"):
 		entry.username = username
 		entry.details = details
 
-		print "before conditional"
 
-		if not entry.fetch():
+		if entry.fetch():
 			result = None
-			print "entry exists"
 		else:
 			new_pass = vault_encrypt.pwd_gen()
-			print "entry does not exist"
 
-			#
-			#if (not(carrot_encrypt.check_key(pwd))):
-			        #key = carrot_encrypt.fit_key(pwd)
-			#else:
-			       # key = pwd
-			#Create AES stream object
- 			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
-    			#ciphertext = aes.encrypt(pwd)
-			encrypt_pass = vault_encrypt.encrypt(new_pass, password)
+		# 	key = None
+		# 	if (not(carrot_encrypt.check_key(password))):
+		# 	        key = carrot_encrypt.fit_key(password)
+		# 	else:
+		# 	       key = password
+		# 	#Create AES stream object
+ 	# 		aes = carrot_encrypt.AESModeOfOperationCTR(key)
+		# 	encrypt_pass = aes.encrypt(new_pass).decode()
+			encrypt_pass = binascii.hexlify(vault_encrypt.encrypt(new_pass, password))
 
 			entry.password = encrypt_pass
 
@@ -197,7 +196,7 @@ def update_pass(username, url, password, new_pass=None):
 			#Create AES stream object
  			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
     			#ciphertext = aes.encrypt(pwd)
-			new_pass = vault_encrypt.encrypt(new_pass, password)
+			new_pass = binascii.hexlify(vault_encrypt.encrypt(new_pass, password))
 
 			entry.password = new_pass
 

@@ -77,6 +77,6 @@ def popup(title, text, style):
     return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
 if __name__ == "__main__":
-    acc = Account("jake", "temp")
+    acc = Account("jake_the_snake", "temp")
     acc.title('CarrotKey')
     acc.mainloop()
