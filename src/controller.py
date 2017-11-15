@@ -92,7 +92,6 @@ def retrieve_pass(username, url, password):
 	if entry.password:
 		# byte_pass = binascii.unhexlify(entry.password)
 		byte_pass = binascii.unhexlify(entry.password)
-		print byte_pass
 		# byte_pass = bin(int(entry.password, 16))[2:]
 
 		vault_pass = vault_encrypt.decrypt(byte_pass, password)

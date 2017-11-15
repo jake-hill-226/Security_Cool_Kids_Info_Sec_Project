@@ -77,7 +77,6 @@ def buildTable(self, username, password):
                 self.rect[row,column] = self.canvas.create_rectangle(
                     x1,y1,x2,y2, fill="navajowhite", tags="rect", outline="grey"
                 )
-
             if column == 4 and row != 0:
                 #this ought to be a button
                 self.rect[row,column] = self.canvas.create_rectangle(
@@ -94,3 +93,5 @@ def buildTable(self, username, password):
                     content = controller.retrieve_pass(entries[row-1].username, entries[row-1].url, password)
 
                 self.canvas.create_text((xC, yC), text=content)
+
+
