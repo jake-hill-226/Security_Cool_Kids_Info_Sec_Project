@@ -53,7 +53,9 @@ class login_gui(tk.Tk):
         self.resizable(False,False)
 
     def checkAuth(self):
-        auth = vault.auth_user(self.username.get(), self.password.get())
+        self.un = self.username.get()
+        self.pw = self.password.get()
+        auth = vault.auth_user(self.un, self.pw)
         if not auth:
             self.onDeny()
         else:
@@ -67,7 +69,7 @@ class login_gui(tk.Tk):
 
     def onAuth(self):
         self.destroy()
-        grid_gui.Account()
+        grid_gui.Account(self.un, self.pw)
 
 if __name__ == "__main__":
     # the class has no parent becaue it is the root

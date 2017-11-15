@@ -28,13 +28,22 @@ class Account(tk.Tk):
         welcomelabel.grid(pady=10, 
                           padx=15, column=0, row=0) 
         buildTable(self,username, password)
+
         self.logoutimg = ImageTk.PhotoImage(Image.open("../assets/logout.gif").resize((100,50)))
-        self.settingsimg =  ImageTk.PhotoImage(Image.open("../assets/settings.gif").resize((50,50)))
+        self.logout = tk.Label(image=self.logoutimg)
+        self.logout.image = self.logoutimg
+
+        self.settingsimg =  ImageTk.PhotoImage(Image.open("../assets/settings.gif").resize((25,25)))
         self.settings = tk.Label(image= self.settingsimg)
         self.settings.image = self.settingsimg
 
-        self.settings.grid(column=0, row=1, sticky="ne")
- 
+        self.plus = ImageTk.PhotoImage(Image.open("../assets/add.gif").resize((25,25))) 
+        self.plusi = tk.Label(image= self.plus)
+        self.plusi.image = self.plus
+
+        self.plusi.grid(column=1, row=2, padx=25, pady=25)
+        self.settings.grid(column=1, row=0, sticky="ne", padx=(0, 25), pady=(25,0))
+
 def buildTable(self, username, password):
     entries = controller.search_vault(username)
 
@@ -53,13 +62,24 @@ def buildTable(self, username, password):
                 pass
             #numbered boxes far left are slightly smaller than their larger counterparts
             elif column == 0 and row != 0:
-               self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, fill="lightgrey", tags="rect")
+               self.rect[row,column] = self.canvas.create_rectangle(
+                   x1,y1,x2,y2, fill="lightgrey", tags="rect", outline="grey"
+               )
                self.canvas.create_text((xC,yC), text=row)
             elif row == 0 and column != 0:
-                self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, fill="orange", tags="rect")
+                self.rect[row,column] = self.canvas.create_rectangle(
+                    x1,y1,x2,y2, fill="orange", tags="rect"
+                )
                 self.canvas.create_text((xC, yC), text=header[column])
             else: 
-                self.rect[row,column] = self.canvas.create_rectangle(x1,y1,x2,y2, fill="white", tags="rect")
+                self.rect[row,column] = self.canvas.create_rectangle(
+                    x1,y1,x2,y2, fill="white", tags="rect", outline="grey"
+                )
+
+            if column == 4:
+                #this ought to be a button
+                self.rect[row,column] = tk.Button(self);
+                self.rect[row,column].grid(column=0, row=row)
 
 
                 content = None
