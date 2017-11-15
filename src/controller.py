@@ -17,12 +17,12 @@ def setup():
 	return None
 
 def create_new_user(username, password, auth_options, email=None, phone=None):
-	CarrotDB.conntect()
+	CarrotDB.connect()
 
 	# grab user credentials
 	user = CarrotDB.User()
 	user.username = username
-	user.password = password
+	user.password = vault_encrypt.hash_user_pwd(password)
 	user.auth_options = auth_options
 	if email:
 		user.email = email

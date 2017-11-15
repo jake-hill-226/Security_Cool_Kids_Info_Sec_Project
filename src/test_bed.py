@@ -28,21 +28,21 @@
 
 ##############################################################
 
-# import vault_encrypt
+import vault_encrypt
 
-# password = "secret"
+password = "secret"
 
-# new_pass = vault_encrypt.pwd_gen()
+new_pass = vault_encrypt.pwd_gen()
 
-# print "New Pass: " + new_pass
+print "New Pass: " + new_pass
 
-# cipher_pass = vault_encrypt.encrypt(new_pass, password)
+cipher_pass = vault_encrypt.encrypt(new_pass, password)
 
-# print "Cipher Pass: " + cipher_pass
+print "Cipher Pass: " + cipher_pass
 
-# plain_pass = vault_encrypt.decrypt(cipher_pass, password)
+plain_pass = vault_encrypt.decrypt(cipher_pass, password)
 
-# print "Plain Pass: " + plain_pass
+print "Plain Pass: " + plain_pass
 
 ##############################################################
 
@@ -53,12 +53,12 @@
 
 ##############################################################
 
-import controller
+# import controller
 
-username = "jake"
-password = "temp"
+# username = "jake"
+# password = "temp"
 
-pass_list = controller.search_vault(username)
+# pass_list = controller.search_vault(username)
 
-for p in pass_list:
-	p.display()
+# for p in pass_list:
+# 	p.display()

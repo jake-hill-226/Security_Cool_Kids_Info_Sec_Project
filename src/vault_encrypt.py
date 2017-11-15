@@ -24,9 +24,8 @@ def decrypt(cipheredpwd, usr_pwd):
     while (len(usr_pwd) < 32):
         usr_pwd = usr_pwd + usr_pwd
 
-    obj2 = AES.new(usr_pwd[:32], AES.MODE_EAX, cipheredpwd[:16])
+    obj2 = AES.new(usr_pwd[:32], AES.MODE_EAX, bytes(cipheredpwd[:16]))
     return(obj2.decrypt(cipheredpwd[16:]))
-
 
 #Generate arbitrary password
 def pwd_gen():

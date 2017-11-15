@@ -28,8 +28,8 @@ class Account(tk.Tk):
         welcomelabel.grid(pady=10, 
                           padx=15, column=0, row=0) 
         buildTable(self,username, password)
-        self.logoutimg = ImageTk.PhotoImage(Image.open("../assets/logout.png").resize((100,50)))
-        self.settingsimg =  ImageTk.PhotoImage(Image.open("../assets/settings.png").resize((50,50)))
+        self.logoutimg = ImageTk.PhotoImage(Image.open("../assets/logout.gif").resize((100,50)))
+        self.settingsimg =  ImageTk.PhotoImage(Image.open("../assets/settings.gif").resize((50,50)))
         self.settings = tk.Label(image= self.settingsimg)
         self.settings.image = self.settingsimg
 
@@ -63,12 +63,12 @@ def buildTable(self, username, password):
 
 
                 content = None
-                if column == 2:
+                if column == 1:
                     content = entries[row - 1].url
-                elif column == 3:
+                elif column == 2:
                     content = entries[row - 1].username
-                elif column == 4:
-                    content = controller.retrieve_pass(entries[row].username, entries[row].url, password)
+                elif column == 3:
+                    content = controller.retrieve_pass(entries[row-1].username, entries[row-1].url, password)
 
                 self.canvas.create_text((xC, yC), text=content)
 
