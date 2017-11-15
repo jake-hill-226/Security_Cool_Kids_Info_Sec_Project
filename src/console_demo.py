@@ -18,7 +18,7 @@ while choice != "q":
 	1. Add user
 	2. Create new pass
 	3. Print passes for user
-	4. Copy password into previouse window
+	4. Copy password into previous window
 	5. AES Demo
 	6. Headless Browser Demo
 
@@ -26,7 +26,7 @@ while choice != "q":
 --------------------------------------------------
 	"""
 
-	choice = raw_input("Slection: ")
+	choice = raw_input("Selction: ")
 
 	if choice == '1':
 		print "**Selected: 1. Add User**"
@@ -43,7 +43,7 @@ while choice != "q":
 		username = raw_input("Enter Username: ")
 		password = raw_input("Enter Password: ")
 		url = raw_input("Enter URL of login page: ")
-		details = raw_input("Enter short desciption of account (optional): ")
+		details = raw_input("Enter short description of account (optional): ")
 
 		controller.store_new_pass(username, url, password, details)
 		result = "New pass added: " + username + ", " + password + ", " + url + ", " + details
@@ -60,7 +60,7 @@ while choice != "q":
 			result = "ID: " + str(pwd.entry_id) + "\nusername: " + pwd.username + "\nurl: " + pwd.url + "\ndetails: " + details + "\npassword: " + pwd.password
 
 	if choice == '4':
-		print "**Selected: 4. Copy password into previouse window**"
+		print "**Selected: 4. Copy password into previous window**"
 		# username = raw_input("Enter Username: ")
 
 		# pass_list = controller.search_vault(username)
