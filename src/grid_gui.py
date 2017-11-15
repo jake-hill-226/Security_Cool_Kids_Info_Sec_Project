@@ -71,11 +71,6 @@ def buildTable(self, username, password):
                     content = controller.retrieve_pass(entries[row-1].username, entries[row-1].url, password)
 
                 self.canvas.create_text((xC, yC), text=content)
-
-
-def popup(title, text, style):
-    return ctypes.windll.user32.MessageBoxW(0, text, title, style)
-
 if __name__ == "__main__":
     acc = Account("jake", "temp")
     acc.title('CarrotKey')
