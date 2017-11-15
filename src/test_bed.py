@@ -1,48 +1,50 @@
 #test bed for functions
 
-from Crypto.Cipher import AES
+# from Crypto.Cipher import AES
 
-key = b'12345678901234567890123456789012'
-cipher = AES.new(key, AES.MODE_EAX)
+# key = b'12345678901234567890123456789012'
+# cipher = AES.new(key, AES.MODE_EAX)
 
-nonce = cipher.nonce
+# nonce = cipher.nonce
 
-print nonce
+# print nonce
 
-message = b"didyousaywaffles"
+# message = b"didyousaywaffles"
 
-ciphertext = nonce + cipher.encrypt(message)
+# ciphertext = nonce + cipher.encrypt(message)
 
 
-print ciphertext
+# print ciphertext
 
-dec_nonce = ciphertext[:16]
+# dec_nonce = ciphertext[:16]
 
-print dec_nonce
+# print dec_nonce
 
-rev_cipher = AES.new(key, AES.MODE_EAX, dec_nonce)
+# rev_cipher = AES.new(key, AES.MODE_EAX, dec_nonce)
 
-plaintext = rev_cipher.decrypt(ciphertext[16:])
+# plaintext = rev_cipher.decrypt(ciphertext[16:])
 
-print plaintext
+# print plaintext
 
 ##############################################################
 
-# import vault_encrypt
+import vault_encrypt
+import binascii
 
-# password = "secret"
+password = "secret"
 
-# new_pass = vault_encrypt.pwd_gen()
+new_pass = vault_encrypt.pwd_gen()
 
-# print "New Pass: " + new_pass
+print "New Pass: " + new_pass
 
-# cipher_pass = vault_encrypt.encrypt(new_pass, password)
+cipher_pass = vault_encrypt.encrypt(new_pass, password)
 
-# print "Cipher Pass: " + cipher_pass
+print "Cipher Pass: " + cipher_pass
+print "Cipher Pass Hex: " + binascii.unhexlify(binascii.hexlify(cipher_pass))
 
-# plain_pass = vault_encrypt.decrypt(cipher_pass, password)
+plain_pass = vault_encrypt.decrypt(cipher_pass, password)
 
-# print "Plain Pass: " + plain_pass
+print "Plain Pass: " + plain_pass
 
 ##############################################################
 
