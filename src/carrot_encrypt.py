@@ -163,7 +163,7 @@ class AES(object):
         return result
 
     def decrypt(self, ciphertext):
-        'Decrypt a block of cipher text using the AES block cipher.'
+       #Decrypt a block of cipher text using the AES block cipher.
 
         if len(ciphertext) != 16:
             raise ValueError('wrong block length')
@@ -234,10 +234,10 @@ class AESBlockModeOfOperation(object):
         raise Exception('not implemented')
 
 class AESStreamModeOfOperation(AESBlockModeOfOperation):
-    '''Super-class for AES modes of operation that are stream-ciphers.'''
+    #Super-class for AES modes of operation that are stream-ciphers.
 
 class AESModeOfOperationCTR(AESStreamModeOfOperation):
-    '''AES Counter Mode of Operation.'''
+    #AES Counter Mode of Operation.
 
     def __init__(self, key, counter = None):
         AESBlockModeOfOperation.__init__(self, key)
@@ -261,7 +261,7 @@ class AESModeOfOperationCTR(AESStreamModeOfOperation):
         return _bytes_to_string(encrypted)
 
     def decrypt(self, crypttext):
-        # AES-CTR is symetric
+        # AES-CTR is symmetric soooo
         return self.encrypt(crypttext)
 
 def check_key (password):
@@ -289,15 +289,19 @@ def fit_key(password):
         return password
     else:
         raise ValueError('Invalid Password Length')
+# This is to test 
 def main():
     pwd = raw_input("Enter in the password to be encrypted: ")
+    #Check length to see if pwd can be key, if not pad it
     if (not(check_key(pwd))):
         key = fit_key(pwd)
     else:
         key = pwd
+     #Create AES stream object
     aes = AESModeOfOperationCTR(key)
     ciphertext = aes.encrypt(pwd)
     print(ciphertext)
+    #object saves state so need a new object to decrypt
     aes_2 = AESModeOfOperationCTR(key)
     plain = aes_2.decrypt(ciphertext)
     print (plain)
