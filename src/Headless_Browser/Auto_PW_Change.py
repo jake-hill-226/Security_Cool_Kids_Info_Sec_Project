@@ -140,12 +140,12 @@ def auto_change_password(login_url, acct_username, acct_password, new_pass):
 
 # Testing methods
 
-fb_login_url = "https://facebook.com"
-g_login_url =
-username = "secCoolKids@gmail.com"
-fb_password = "holycowbatman123"
-g_password = "supersecret"
+# fb_login_url = "https://facebook.com"
+# g_login_url = "https://accounts.google.com"
+# username = "secCoolKids@gmail.com"
+# fb_password = "holycowbatman123"
+# g_password = "supersecret"
 
-#auto_change_password(login_url, username, password, "robotsAreCool123")
+# #auto_change_password(login_url, username, password, "robotsAreCool123")
 
-change_google_password(username, g_password, "testing")
+# change_google_password(username, g_password, "testing")

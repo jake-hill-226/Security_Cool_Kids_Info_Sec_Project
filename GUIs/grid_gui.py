@@ -23,8 +23,8 @@ class Account(tk.Tk):
         welcomelabel.grid(pady=10, 
                           padx=15, column=0, row=0) 
         buildTable(self)
-        self.logoutimg = ImageTk.PhotoImage(Image.open("../assets/logout.png").resize((100,50)))
-        self.settingsimg =  ImageTk.PhotoImage(Image.open("../assets/settings.png").resize((50,50)))
+        self.logoutimg = ImageTk.PhotoImage(Image.open("../assets/logout.gif").resize((100,50)))
+        self.settingsimg =  ImageTk.PhotoImage(Image.open("../assets/settings.gif").resize((50,50)))
         self.settings = tk.Label(image= self.settingsimg)
         self.settings.image = self.settingsimg
 
@@ -34,7 +34,7 @@ def buildTable(self):
     header = ["", "Account", "Username", "Password"]
     self.rect = {}
     for column in range(4):
-        for row in range(1):
+        for row in range(4):
             x1 = column * self.cellwidth
             y1 = row * self.cellheight
             x2 = x1 + self.cellwidth
