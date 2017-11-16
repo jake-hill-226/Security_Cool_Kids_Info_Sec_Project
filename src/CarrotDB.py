@@ -1,3 +1,6 @@
+# Author: Dikai Xiong
+# Class: CSE 4471, AU17, 11:10 WF
+
 import sqlite3
 
 # Description:
