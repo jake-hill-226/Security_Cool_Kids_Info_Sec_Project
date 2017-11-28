@@ -7,6 +7,7 @@ import ctypes
 import grid_gui
 import CarrotDB
 import vault_encrypt as vault
+import factor_auth_gui
 
 class login_gui(tk.Tk):
 
@@ -14,13 +15,15 @@ class login_gui(tk.Tk):
         tk.Tk.__init__(self, parent)
         self.grid()
         self.initialize()
+
+        self.auth_count = 0
     
     def initialize(self):
         pad = 15
         ico = ImageTk.PhotoImage(Image.open("../assets/corpCarrot.gif").resize((250,250)))
         self.icoLab = tk.Label(image=ico)
         self.icoLab.image = ico
-        
+
         self.icoLab.grid(column=0, row = 0, sticky="N")
 
         self.headerfont = tkFont.Font(family="futura", size=32)
@@ -58,6 +61,9 @@ class login_gui(tk.Tk):
         auth = vault.auth_user(self.un, self.pw)
         if not auth:
             self.onDeny()
+            self.auth_count += 1
+            if self.auth_count == 3:
+                self.onValidate()
         else:
             self.onAuth()
 
@@ -70,6 +76,10 @@ class login_gui(tk.Tk):
     def onAuth(self):
         self.destroy()
         grid_gui.Account(self.un, self.pw)
+
+    def onValidate(self):
+        self.destroy()
+        factor_auth_gui.Auth()
 
 if __name__ == "__main__":
     # the class has no parent becaue it is the root
