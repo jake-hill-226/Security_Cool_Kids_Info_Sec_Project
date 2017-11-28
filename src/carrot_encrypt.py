@@ -5,10 +5,6 @@ from time import time
 
 
 class AES(object):
-    #######################################################
-    # The numbers for the matrices used for transformations
-    # were taken from Richard Moore' pyaes implementation
-    #######################################################
 
     # Number of rounds by keysize
     number_of_rounds = {16: 10, 24: 12, 32: 14}
