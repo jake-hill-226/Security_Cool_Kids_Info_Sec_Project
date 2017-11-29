@@ -1,4 +1,19 @@
-# Console based features demo
+"""
+###############################################
+		Console based features demo
+
+Description: This simple demo illustrates the features we were able to
+			 implement but not fully integrate into the CarrotKey GUI
+
+Contributors: Jake Hill 
+			  Anastasia Bourlas
+			  Phaedra Paul
+			  Dikai Xiong
+			  Fan Chen
+
+Last Modified: 11/22/17
+###############################################
+"""
 
 import controller
 import carrot_encrypt
@@ -19,7 +34,7 @@ while choice != "q":
 	1. Add user
 	2. Create new pass
 	3. Print passes for user
-	4. Copy password into previouse window
+	4. Copy password into previous window
 	5. AES Demo
 	6. Headless Browser Demo
 
@@ -28,6 +43,7 @@ while choice != "q":
 	"""
 
 	choice = raw_input("Selection: ")
+
 
 	if choice == '1':
 		print "**Selected: 1. Add User**"
@@ -44,7 +60,7 @@ while choice != "q":
 		username = raw_input("Enter Username: ")
 		password = raw_input("Enter Password: ")
 		url = raw_input("Enter URL of login page: ")
-		details = raw_input("Enter short desciption of account (optional): ")
+		details = raw_input("Enter short description of account (optional): ")
 
 		controller.store_new_pass(username, url, password, details)
 		result = "New pass added: " + username + ", " + password + ", " + url + ", " + details
@@ -61,7 +77,7 @@ while choice != "q":
 			result = "ID: " + str(pwd.entry_id) + "\nusername: " + pwd.username + "\nurl: " + pwd.url + "\ndetails: " + details + "\npassword: " + pwd.password
 
 	if choice == '4':
-		print "**Selected: 4. Copy password into previouse window**"
+		print "**Selected: 4. Copy password into previous window**"
 		# username = raw_input("Enter Username: ")
 
 		# pass_list = controller.search_vault(username)
@@ -120,16 +136,6 @@ while choice != "q":
 			password = g_password
 
 		auto_pass.auto_change_password(login_url, username, password, "robotsAreCool123")
-	# if choice == '7':
-	# 	print "**Selected: 7. 2-Factor-Auth Demo"
-	# 	code = twofactor.init_2fa()
-
-	# 	user_auth = raw_input("Please enter 2fa code: ")
-
-	# 	if user_auth == code:
-	# 		result = "User has been authenticated"
-	# 	else:
-	# 		result = "Code entered was wrong"
 
 	print_buff()
 	print result + "\n\n"
