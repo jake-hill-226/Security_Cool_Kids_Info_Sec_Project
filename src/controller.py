@@ -242,8 +242,7 @@ def update_pass(username, url, password, new_pass=None):
 			entry.update()
 
 	CarrotDB.disconnect()
-	return resul
-t
+	return result
 """
 # Search for a password via its url
 # username: The authenticated user
