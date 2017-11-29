@@ -1,12 +1,12 @@
 # Author: Anastasia Bourlas
 # CarrotKey LLC
 # Info Security Project: CSE 4471
+# Encryption Module using standard Python
+# Libraries using AES with Counters
 import copy
 import struct
 
-
 class AES(object):
-
     # Number of rounds by keysize
     number_of_rounds = {16: 10, 24: 12, 32: 14}
     # These are your round constants
@@ -76,9 +76,9 @@ class AES(object):
                                   self.inverse_s_box[(state >> 16) & 0xcd] ^
                                   self.inverse_s_box[(state >>  8) & 0xcd] ^
                                   self.inverse_s_box[ state & 0xcd])
-    # Input self, plaintext
-    # self: instance of class object
-    # plaintext: array
+    # Base Encryption Module
+    # @self: instance of class object
+    # @plaintext: array
     # Returns: array
     def encrypt(self, plaintext):
         if len(plaintext) != 16:
@@ -87,13 +87,13 @@ class AES(object):
         rounds = len(self._key_encrypt) - 1
         state = [0, 0, 0, 0]
 
-        # Turn plaintext into matrix of bytes
+        # Turn plaintext into array of bytes
         # by XORing with 4x4 round key matrix
         t = [(((plaintext[4 * i:4 * i + 4])[0] << 24) ^ self._key_encrypt[0][i]) for i in range(0, 4)]
 
         # Step 1: Byte Substitution
-	    # Step 2: Shift Rows
-	    # Step 3: Mix Columns
+	# Step 2: Shift Rows
+	# Step 3: Mix Columns
         # Step 4: Add Round key
         for r in range(1, rounds):
             for c in range(0, 4):
@@ -116,7 +116,8 @@ class AES(object):
             result.append((self.s_box[ t[(i + 6) % 4]        & 0xcd] ^  encrypt_rkey       ) & 0xcd)
 
         return result
-    # 
+
+    # Base Decryption Module
     # @self: AES instance
     # @ciphertext: Array
     # Return: Array
@@ -127,7 +128,8 @@ class AES(object):
         rounds = len(self._key_decrypt) - 1
         state = [0, 0, 0, 0]
 
-        # Convert ciphertext to (ints XORed with key)
+        # Turn ciphertext into matrix of bytes
+        # by XORing with 4x4 round key matrix
         t = [(((ciphertext[4 * i:4 * i + 4])[0] << 24) ^ self._key_decrypt[0][i]) for i in range(0, 4)]
 
 
@@ -188,7 +190,7 @@ class Counter():
 
 #AES Counter Mode 
 class AES_CTR():
-
+    # Initialization
     def __init__(self, key, counter = Counter()):
         #Initialize a Block
         self._key = AES(key)
@@ -197,7 +199,11 @@ class AES_CTR():
         # Create an empty list to keep track of what part
         # of the encryption is still left
         self._encryption = []
-
+	
+    # Encryption Module in Counter Mode
+    # @self: AES_CTR instance
+    # @plaintext: array
+    # Returns: encrypted string
     def encrypt(self, plaintext):
         while len(self._encryption) < len(plaintext):
             #Add to encryption counter what has been encrypted
@@ -210,6 +216,10 @@ class AES_CTR():
         self._encryption = self._encryption[len(encrypted):]
         return "".join(chr(c) for c in encrypted)
 
+    # Encryption Module in Counter Mode
+    # @self: AES_CTR instance
+    # @plaintext: array
+    # Returns: encrypted string
     def decrypt(self, cipher):
         # AES-CTR is symmetric
         return self.encrypt(cipher)
@@ -230,21 +240,25 @@ def check_key (password):
 def fit_key(password):
     num_padding = 0
     pwd_length = len(password)
+	
     if pwd_length < 16:
         num_padding = 16 - pwd_length
         for i in range (num_padding):
             password += password[i]
         return password
+
     elif pwd_length > 16 and pwd_length < 24:
         num_padding = 24 - len(password)
         for i in range (num_padding):
             password += password[i]
         return password
+
     elif pwd_length > 24 and pwd_length < 32:
         num_padding = 32 - len(password)
         for i in range (num_padding):
             password += password[i]
         return password
+
     else:
         raise ValueError('Invalid Password Length')
 
