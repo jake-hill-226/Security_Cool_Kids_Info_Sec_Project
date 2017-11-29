@@ -117,17 +117,20 @@ def retrieve_pass(username, url, password):
 	entry.fetch()
 
 	#
-	#if (not(carrot_encrypt.check_key(pwd))):
-		#key = carrot_encrypt.fit_key(pwd)
-	#else:
-	       # key = pwd
-	#Create AES stream object
- 	#aes = carrot_encrypt.AES_CTR(key)
-    	#plaintext = aes.decrypt(pwd)
+	
+	
+	
 	
 	# decrypt stored password with user credentials
 	if entry.password:
-		vault_pass = vault_encrypt.decrypt(entry.password, password)
+		if (not(carrot_encrypt.check_key(password))):
+			key = carrot_encrypt.fit_key(password)
+		else:
+	        	key = password
+		#Create AES stream object
+ 		aes = carrot_encrypt.AES_CTR(key)
+    		vault_pass = aes.decrypt(password)
+		#vault_pass = vault_encrypt.decrypt(entry.password, password)
 
 	CarrotDB.disconnect()
 
@@ -175,15 +178,15 @@ def store_new_pass(username, url, password, details="N/A"):
 			new_pass = vault_encrypt.pwd_gen()
 			print "entry does not exist"
 
-			#
-			#if (not(carrot_encrypt.check_key(pwd))):
-			        #key = carrot_encrypt.fit_key(pwd)
-			#else:
-			       # key = pwd
+			
+			if (not(carrot_encrypt.check_key(password))):
+			        key = carrot_encrypt.fit_key(passwordd)
+			else:
+			        key = password
 			#Create AES stream object
- 			#aes = carrot_encrypt.AES_CTR(key)
-    			#ciphertext = aes.encrypt(pwd)
-			encrypt_pass = vault_encrypt.encrypt(new_pass, password)
+ 			aes = carrot_encrypt.AES_CTR(key)
+    			encrypt_pass = aes.encrypt(password)
+			#encrypt_pass = vault_encrypt.encrypt(new_pass, password)
 
 			entry.password = encrypt_pass
 
@@ -225,17 +228,18 @@ def update_pass(username, url, password, new_pass=None):
 		if not entry.fetch():
 			result = None
 		else:
+			if (not(carrot_encrypt.check_key(password))):
+			        key = carrot_encrypt.fit_key(password)
+			else:
+			        key = password
+			#Create AES stream object
+ 			aes = carrot_encrypt.AESMode_CTR(key)
+    			
 			if(new_pass == None):
 				new_pass = vault_encrypt.pwd_gen()
 
-			#if (not(carrot_encrypt.check_key(pwd))):
-			        #key = carrot_encrypt.fit_key(pwd)
-			#else:
-			       # key = pwd
-			#Create AES stream object
- 			#aes = carrot_encrypt.AESMode_CTR(key)
-    			#ciphertext = aes.encrypt(pwd)
-			new_pass = vault_encrypt.encrypt(new_pass, password)
+			
+			new_pass = aes.encrypt(password)
 
 			entry.password = new_pass
 
