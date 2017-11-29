@@ -1,7 +1,28 @@
+"""
+#########################################################
+					Auto_PW_Change
+Description: A module used to change the password automatically via
+			 a headless browser
+
+Contributors: Jake Hill
+Last Modified: 11/28/17
+
+#########################################################
+"""
+
+
 from splinter import Browser
 from selenium import webdriver
 import time
 
+
+"""
+# Initializes an instance of a headless chrome browser starting at "url"
+
+# url: (string) The url for which to initialize the browser session for
+
+# return val: (Browser) A splinter browser object
+"""
 def init_browser(url):
 	try:
 		# Disable browser notifications for unimpeeded web browsing	
@@ -21,6 +42,14 @@ def init_browser(url):
 			browser.quit()
 	return browser
 
+
+"""
+# Changes the password for the given user credentials on Facebook
+
+# acct_username: (string) The user's facebook username
+# acct_pasword: (string) The user's facebook password
+# new_pass: (string) The new password to replace the existing one
+"""
 def change_facebook_password(acct_username, acct_password, new_pass):
 	try:
 		browser = init_browser("https://Facebook.com")
@@ -68,9 +97,16 @@ def change_facebook_password(acct_username, acct_password, new_pass):
 		browser.quit()
 		return
 
-	#browser.quit()
+	browser.quit()
 	print "Password Successfully Changed for Facebook"
 
+"""
+# Changes the password for the given user credentials on Google
+
+# acct_username: (string) The user's Google username
+# acct_pasword: (string) The user's Google password
+# new_pass: (string) The new password to replace the existing one
+"""
 def change_google_password(acct_username, acct_password, new_pass):
 	browser = init_browser("https://accounts.google.com")
 
@@ -112,23 +148,31 @@ def change_google_password(acct_username, acct_password, new_pass):
 		print "Error: failed to submit new password"
 
 	raw_input("<press enter to close session>")
-	#browser.quit()
+	browser.quit()
 
+"""
+# Changes the password for the given user credentials on a select list
+  of supported websites
 
+# Login_url: (string) The url for the login page of a given website
+# acct_username: (string) The user's website username
+# acct_pasword: (string) The user's website password
+# new_pass: (string) The new password to replace the existing one
+"""
 def auto_change_password(login_url, acct_username, acct_password, new_pass):
-	#url_file = open("supported_websites.txt", "r")
+	url_file = open("supported_websites.txt", "r")
 
-	# supported_list = []
+	supported_list = []
 
-	# for line in url_file:
-	# 	line.replace("\n", "");
-	# 	supported_list.append(line)
+	for line in url_file:
+		line.replace("\n", "");
+		supported_list.append(line)
 
-	# url_file.close()
+	url_file.close()
 
-	# if login_url not in supported_list:
-	# 	print "Sorry this website is unsupported\n"
-	# 	return
+	if login_url not in supported_list:
+		print "Sorry this website is unsupported\n"
+		return
 
 	if login_url == "https://facebook.com":
 		change_facebook_password(acct_username, acct_password, new_pass)
@@ -136,16 +180,14 @@ def auto_change_password(login_url, acct_username, acct_password, new_pass):
 		change_google_password(acct_username, acct_password, new_pass)
 
 		
+# A section used for testing this module as a standalone script
 
+if __name__=="__main__":
 
-# Testing methods
+	fb_login_url = "https://facebook.com"
+	g_login_url = "https://accounts.google.com"
+	username = "secCoolKids@gmail.com"
+	fb_password = "holycowbatman123"
+	g_password = "supersecret"
 
-# fb_login_url = "https://facebook.com"
-# g_login_url = "https://accounts.google.com"
-# username = "secCoolKids@gmail.com"
-# fb_password = "holycowbatman123"
-# g_password = "supersecret"
-
-# #auto_change_password(login_url, username, password, "robotsAreCool123")
-
-# change_google_password(username, g_password, "testing")
+	change_google_password(username, g_password, "testing")

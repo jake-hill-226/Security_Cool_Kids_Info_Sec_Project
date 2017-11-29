@@ -1,29 +1,46 @@
+"""
+##########################################################
+				controller
+
+Description: This module is an inteface to link all feature components of CarrotKey 
+			 to the front end GUI. All functions contained in this module access 
+			 various modules of the application in order to facilitate the middle 
+			 logic between the front-end interface and the back-end logic and management.
+
+Contributors: Jake Hill
+Last modified: 11/27/17			 
+##########################################################
+"""
+
+
 import CarrotDB
 import carrot_encrypt
 import vault_encrypt
 from Headless_Browser import Auto_PW_Change
 from pyautogui import press, typewrite, hotkey
 import re
-import binascii
 
-def setup():
-	# Prompt User for login credentials
 
-	# Create User
+"""
+# Instantiates a new user for the application
 
-	# Initialize user in DB
-
-	# Prompt User to enter new passwords to vault
-
-	return None
-
+# username: (string) The username of the new user
+# password: (string) The application password for the new user
+# auth_options: (int) An integer value associated with the method of authentication a user wants
+					  when logging into the application. (optional)
+					    1. password only
+					    2. password and 2 factor auth via phone
+					    3. password and 2 factor auth via email
+# email: The new email address used in 2 factor auth for the user (optional)
+# phone: The new phone number used in 2 factor auth for the user (optional)
+"""
 def create_new_user(username, password, auth_options, email=None, phone=None):
-	CarrotDB.connect()
+	CarrotDB.conntect()
 
 	# grab user credentials
 	user = CarrotDB.User()
 	user.username = username
-	user.password = vault_encrypt.hash_user_pwd(password)
+	user.password = password
 	user.auth_options = auth_options
 	if email:
 		user.email = email
@@ -32,7 +49,20 @@ def create_new_user(username, password, auth_options, email=None, phone=None):
 
 	user.insert()
 
-def update_user_prefs(username, new_username=None, password=None, auth_options=None, email=None, phone=None):
+"""
+# Used to modify an existing user's credentials and authentication preferences within
+	the database.
+# username: The username of an existing user of the application
+# password: The new application password for the corresponding  user (optional)
+# auth_options: An integer value associated with the method of authentication a user wants
+				when logging into the application. (optional)
+				1. password only
+				2. password and 2 factor auth via phone
+				3. password and 2 factor auth via email
+# email: The new email address used in 2 factor auth for the user (optional)
+# phone: The new phone number used in 2 factor auth for the user (optional)
+"""
+def update_user_prefs(username, password=None, auth_options=None, email=None, phone=None):
 	CarrotDB.conntect()
 
 	# grab user credentials
@@ -40,15 +70,22 @@ def update_user_prefs(username, new_username=None, password=None, auth_options=N
 	user.username = username
 	user.fetch()
 
+	# Change them according to the input parameters
 	if password:
 		user.password = vault_encrypt.hash_usr_pwd(password)
 	if auth_options:
 		user.auth_options = auth_options
 	if email and re.search('^.*@.*\....$', email):
+		# email is matched to a regular expression reflecting the standard email
+		# format in order to prevent junk entries into the database.
+		# This of course does not prevent the entry of invalid email addresses however,
+		# it does prevent the entry of non-email like inputs
 		user.email = email
 	else:
 		print "Error: invalid email format. Attribute not updated in database"
 	if phone and re.search('^\d\d\d-\d\d\d-\d\d\d\d$', phone):
+		# phone is matched to a regular expression reflecting the standard phone number
+		# format in order to prevent junk entries into the database
 		user.phone = phone
 	else:
 		print "Error: invalid phone number format. Attribute not updated in database"
@@ -90,11 +127,7 @@ def retrieve_pass(username, url, password):
 	
 	# decrypt stored password with user credentials
 	if entry.password:
-		# byte_pass = binascii.unhexlify(entry.password)
-		byte_pass = binascii.unhexlify(entry.password)
-		# byte_pass = bin(int(entry.password, 16))[2:]
-
-		vault_pass = vault_encrypt.decrypt(byte_pass, password)
+		vault_pass = vault_encrypt.decrypt(entry.password, password)
 
 	CarrotDB.disconnect()
 
@@ -133,21 +166,24 @@ def store_new_pass(username, url, password, details="N/A"):
 		entry.username = username
 		entry.details = details
 
+		print "before conditional"
 
-		if entry.fetch():
+		if not entry.fetch():
 			result = None
+			print "entry exists"
 		else:
 			new_pass = vault_encrypt.pwd_gen()
+			print "entry does not exist"
 
-		# 	key = None
-		# 	if (not(carrot_encrypt.check_key(password))):
-		# 	        key = carrot_encrypt.fit_key(password)
-		# 	else:
-		# 	       key = password
-		# 	#Create AES stream object
- 	# 		aes = carrot_encrypt.AESModeOfOperationCTR(key)
-		# 	encrypt_pass = aes.encrypt(new_pass).decode()
-			encrypt_pass = binascii.hexlify(vault_encrypt.encrypt(new_pass, password))
+			#
+			#if (not(carrot_encrypt.check_key(pwd))):
+			        #key = carrot_encrypt.fit_key(pwd)
+			#else:
+			       # key = pwd
+			#Create AES stream object
+ 			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
+    			#ciphertext = aes.encrypt(pwd)
+			encrypt_pass = vault_encrypt.encrypt(new_pass, password)
 
 			entry.password = encrypt_pass
 
@@ -199,15 +235,15 @@ def update_pass(username, url, password, new_pass=None):
 			#Create AES stream object
  			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
     			#ciphertext = aes.encrypt(pwd)
-			new_pass = binascii.hexlify(vault_encrypt.encrypt(new_pass, password))
+			new_pass = vault_encrypt.encrypt(new_pass, password)
 
 			entry.password = new_pass
 
 			entry.update()
 
 	CarrotDB.disconnect()
-	return result
-
+	return resul
+t
 """
 # Search for a password via its url
 # username: The authenticated user
@@ -237,7 +273,10 @@ def sim_Alt_Tab():
 	hotkey('alt','tab')
 
 """
-# A helper method to circumvent copy/paste of passwords 
+# A helper method to circumvent copy/paste of passwords
+# Simulates that typing of the provided message
+# 
+# message: The string to be typed using the keyboard emulator  
 """
 def sim_typing(message):
 	typewrite(message)
