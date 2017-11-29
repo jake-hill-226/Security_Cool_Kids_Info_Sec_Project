@@ -76,9 +76,9 @@ class AES(object):
                                   self.inverse_s_box[(state >> 16) & 0xcd] ^
                                   self.inverse_s_box[(state >>  8) & 0xcd] ^
                                   self.inverse_s_box[ state & 0xcd])
-    # Input @self, @plaintext
-    # @self: instance of class object
-    # @plaintext: array
+    # Input self, plaintext
+    # self: instance of class object
+    # plaintext: array
     # Returns: array
     def encrypt(self, plaintext):
         if len(plaintext) != 16:
