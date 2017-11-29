@@ -3,6 +3,7 @@
 import controller
 import carrot_encrypt
 import vault_encrypt
+#import twofactor
 from Headless_Browser import Auto_PW_Change as auto_pass
 
 choice = ""
@@ -26,7 +27,7 @@ while choice != "q":
 --------------------------------------------------
 	"""
 
-	choice = raw_input("Slection: ")
+	choice = raw_input("Selection: ")
 
 	if choice == '1':
 		print "**Selected: 1. Add User**"
@@ -89,8 +90,14 @@ while choice != "q":
 
 		std_ciphertext = vault_encrypt.encrypt(pwd, pwd)
 
+		aes = carrot_encrypt.AESModeOfOperationCTR(key)
+		plain_text = aes.decrypt(ciphertext)
+		std_plaintext = vault_encrypt.decrypt(std_ciphertext, pwd)
+
 		result += "\nEncrypted Password (Our AES - CBC): " + ciphertext
 		result += "\nEncyted Password (AES - EAX mode): " + std_ciphertext
+		result += "\nDecrypted Password (Our AES - CBC): " + plain_text
+		result += "\nDecrypted Password (AES - EAX mode): " + std_plaintext
 	if choice == '6':
 		print "**Selected: 6. Headless Browser Demo**"
 
@@ -113,8 +120,16 @@ while choice != "q":
 			password = g_password
 
 		auto_pass.auto_change_password(login_url, username, password, "robotsAreCool123")
+	# if choice == '7':
+	# 	print "**Selected: 7. 2-Factor-Auth Demo"
+	# 	code = twofactor.init_2fa()
 
-		#change_google_password(username, g_password, "testing")
+	# 	user_auth = raw_input("Please enter 2fa code: ")
+
+	# 	if user_auth == code:
+	# 		result = "User has been authenticated"
+	# 	else:
+	# 		result = "Code entered was wrong"
 
 	print_buff()
 	print result + "\n\n"
