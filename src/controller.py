@@ -122,7 +122,7 @@ def retrieve_pass(username, url, password):
 	#else:
 	       # key = pwd
 	#Create AES stream object
- 	#aes = carrot_encrypt.AESModeOfOperationCTR(key)
+ 	#aes = carrot_encrypt.AES_CTR(key)
     	#plaintext = aes.decrypt(pwd)
 	
 	# decrypt stored password with user credentials
@@ -181,7 +181,7 @@ def store_new_pass(username, url, password, details="N/A"):
 			#else:
 			       # key = pwd
 			#Create AES stream object
- 			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
+ 			#aes = carrot_encrypt.AES_CTR(key)
     			#ciphertext = aes.encrypt(pwd)
 			encrypt_pass = vault_encrypt.encrypt(new_pass, password)
 
@@ -233,7 +233,7 @@ def update_pass(username, url, password, new_pass=None):
 			#else:
 			       # key = pwd
 			#Create AES stream object
- 			#aes = carrot_encrypt.AESModeOfOperationCTR(key)
+ 			#aes = carrot_encrypt.AESMode_CTR(key)
     			#ciphertext = aes.encrypt(pwd)
 			new_pass = vault_encrypt.encrypt(new_pass, password)
 
