@@ -96,7 +96,7 @@ def change_facebook_password(acct_username, acct_password, new_pass):
 		print "Error: Failed to submit change password form"
 		browser.quit()
 		return
-
+	raw_input("<press enter to close session>")
 	browser.quit()
 	print "Password Successfully Changed for Facebook"
 
@@ -160,15 +160,17 @@ def change_google_password(acct_username, acct_password, new_pass):
 # new_pass: (string) The new password to replace the existing one
 """
 def auto_change_password(login_url, acct_username, acct_password, new_pass):
-	url_file = open("supported_websites.txt", "r")
+	url_file = open("./Headless_Browser/supported_websites.txt", "r")
 
 	supported_list = []
 
 	for line in url_file:
-		line.replace("\n", "");
+		line = line[:len(line) - 1]
 		supported_list.append(line)
 
 	url_file.close()
+
+	print supported_list
 
 	if login_url not in supported_list:
 		print "Sorry this website is unsupported\n"

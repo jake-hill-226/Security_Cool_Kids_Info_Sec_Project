@@ -264,7 +264,7 @@ class Entry():
 			params = (self.user_id, self.url)
 		else:
 			print "entry_id or (user_id, url) required for fetch()"
-			return None
+			return False
 
 		CarrotDB.c.execute(query,params)
 		row = CarrotDB.c.fetchone()
@@ -281,7 +281,7 @@ class Entry():
 			# update old values too
 			self.copy_to_old()
 			print row
-		return True
+			return True
 
 
 	# Description:

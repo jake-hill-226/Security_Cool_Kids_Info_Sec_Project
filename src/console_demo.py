@@ -54,7 +54,7 @@ while choice != "q":
 		phone = raw_input("Enter phone (optional may leave blank): ")
 
 		controller.create_new_user(username, password, auth_options, email, phone)
-		result = "New pass added: " + username + ", " + password + ", " + auth_options +", " + email + ", " + phone
+		result = "New user added: " + username + ", " + password + ", " + auth_options +", " + email + ", " + phone
 	if choice == '2':
 		print "**Selected: 2. Create new pass**"
 		username = raw_input("Enter Username: ")
@@ -68,13 +68,24 @@ while choice != "q":
 	if choice == '3':
 		print "**Selected: 3. Print passes for user**"
 		username = raw_input("Enter Username: ")
+		password = raw_input("Enter Password: ")
 
 		pass_list = controller.search_vault(username)
-		for pwd in pass_list:
-			details = ""
-			if pwd.details:
-				details = pwd.details
-			result = "ID: " + str(pwd.entry_id) + "\nusername: " + pwd.username + "\nurl: " + pwd.url + "\ndetails: " + details + "\npassword: " + pwd.password
+
+		for passw in pass_list:
+			passw.password = controller.retrieve_pass(username, passw.url, password)
+			print passw.password.encode("hex")
+
+		result = ""
+
+		if(len(pass_list) > 0):
+			for pwd in pass_list:
+				details = ""
+				if pwd.details:
+					details = pwd.details
+				result = result + "ID: " + str(pwd.entry_id) + "\nusername: " + pwd.username + "\nurl: " + pwd.url + "\ndetails: " + details + "\npassword: " + pwd.password + "\n"
+		else:
+			result = "No passwords stored for " + username
 
 	if choice == '4':
 		print "**Selected: 4. Copy password into previous window**"
@@ -101,12 +112,11 @@ while choice != "q":
 		else:
 		       key = pwd
 		#Create AES stream object
-		aes = carrot_encrypt.AESModeOfOperationCTR(key)
+		aes = carrot_encrypt.AES_CTR(key)
 		ciphertext = aes.encrypt(pwd)
-
 		std_ciphertext = vault_encrypt.encrypt(pwd, pwd)
 
-		aes = carrot_encrypt.AESModeOfOperationCTR(key)
+		aes = carrot_encrypt.AES_CTR(key)
 		plain_text = aes.decrypt(ciphertext)
 		std_plaintext = vault_encrypt.decrypt(std_ciphertext, pwd)
 
@@ -135,6 +145,7 @@ while choice != "q":
 			login_url = g_login_url
 			password = g_password
 
+		print "Selection results: url " + login_url 
 		auto_pass.auto_change_password(login_url, username, password, "robotsAreCool123")
 
 	print_buff()

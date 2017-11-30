@@ -62,7 +62,7 @@ class login_gui(tk.Tk):
 
         self.button.grid(column=0, row=7, pady=(0, pad))
         self.grid_columnconfigure(0,weight=1)
-        self.resizable(False,False)
+        self.resizable(True,True)
 
     #checks if input matches. on 3 failed attempts, calls 2 factor auth code
     def checkAuth(self):

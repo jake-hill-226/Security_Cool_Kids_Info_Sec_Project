@@ -19,6 +19,7 @@ import vault_encrypt
 from Headless_Browser import Auto_PW_Change
 from pyautogui import press, typewrite, hotkey
 import re
+import base64
 
 
 """
@@ -35,12 +36,12 @@ import re
 # phone: The new phone number used in 2 factor auth for the user (optional)
 """
 def create_new_user(username, password, auth_options, email=None, phone=None):
-	CarrotDB.conntect()
+	CarrotDB.connect()
 
 	# grab user credentials
 	user = CarrotDB.User()
 	user.username = username
-	user.password = password
+	user.password = vault_encrypt.hash_usr_pwd(password)
 	user.auth_options = auth_options
 	if email:
 		user.email = email
@@ -63,7 +64,7 @@ def create_new_user(username, password, auth_options, email=None, phone=None):
 # phone: The new phone number used in 2 factor auth for the user (optional)
 """
 def update_user_prefs(username, password=None, auth_options=None, email=None, phone=None):
-	CarrotDB.conntect()
+	CarrotDB.connect()
 
 	# grab user credentials
 	user = CarrotDB.User()
@@ -72,7 +73,7 @@ def update_user_prefs(username, password=None, auth_options=None, email=None, ph
 
 	# Change them according to the input parameters
 	if password:
-		user.password = vault_encrypt.hash_usr_pwd(password)
+		user.password = vault_encrypt.hash_user_pwd(password)
 	if auth_options:
 		user.auth_options = auth_options
 	if email and re.search('^.*@.*\....$', email):
@@ -89,6 +90,8 @@ def update_user_prefs(username, password=None, auth_options=None, email=None, ph
 		user.phone = phone
 	else:
 		print "Error: invalid phone number format. Attribute not updated in database"
+
+	user.update()
 	CarrotDB.disconnect()
 
 """
@@ -117,24 +120,27 @@ def retrieve_pass(username, url, password):
 	entry.fetch()
 
 	#
-	
-	
-	
+	vault_pass = ""
 	
 	# decrypt stored password with user credentials
 	if entry.password:
+		bin_pass = entry.password.decode("hex")
+		bin_pass = base64.standard_b64decode(bin_pass)
+		print "Hex Pass to bin: " + bin_pass
 		if (not(carrot_encrypt.check_key(password))):
 			key = carrot_encrypt.fit_key(password)
 		else:
 	        	key = password
 		#Create AES stream object
  		aes = carrot_encrypt.AES_CTR(key)
-    		vault_pass = aes.decrypt(password)
+    		vault_pass = aes.decrypt(bin_pass)
 		#vault_pass = vault_encrypt.decrypt(entry.password, password)
 
 	CarrotDB.disconnect()
 
-	return vault_pass
+	print "Vault pass: " + vault_pass
+
+	return str(vault_pass)
 
 
 """
@@ -158,10 +164,11 @@ def store_new_pass(username, url, password, details="N/A"):
 	user.username = username
 	user.fetch()
 
-	print "user fetched"
+	
 	if not user.fetch():
 		result = None
 	else:
+		print "user fetched"
 		entry = CarrotDB.Entry()
 
 		entry.user_id = user.row_id
@@ -169,9 +176,7 @@ def store_new_pass(username, url, password, details="N/A"):
 		entry.username = username
 		entry.details = details
 
-		print "before conditional"
-
-		if not entry.fetch():
+		if entry.fetch():
 			result = None
 			print "entry exists"
 		else:
@@ -180,15 +185,15 @@ def store_new_pass(username, url, password, details="N/A"):
 
 			
 			if (not(carrot_encrypt.check_key(password))):
-			        key = carrot_encrypt.fit_key(passwordd)
+			        key = carrot_encrypt.fit_key(password)
 			else:
 			        key = password
 			#Create AES stream object
  			aes = carrot_encrypt.AES_CTR(key)
-    			encrypt_pass = aes.encrypt(password)
+    			encrypt_pass = aes.encrypt(new_pass)
 			#encrypt_pass = vault_encrypt.encrypt(new_pass, password)
-
-			entry.password = encrypt_pass
+			encrypt_pass = base64.standard_b64encode(encrypt_pass)
+			entry.password = encrypt_pass.encode("hex")
 
 			entry.insert()
 
@@ -199,8 +204,8 @@ def store_new_pass(username, url, password, details="N/A"):
 # Update an existing account password in database
 # username: The user name of the currently logged on
 			user
-# url: The url for the account associated with the
-	   password
+# url: The url for the website associated with the
+	   account password
 # password: The authenticated user's password
 # new_pass: The new password to be used for given account
 # return val: None(error occured) or True(success)
