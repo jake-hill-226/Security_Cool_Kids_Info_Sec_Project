@@ -68,7 +68,7 @@ def buildTable(self, username, password):
     self.pwd = []
 
     for column in range(5):
-        for row in range(len(test) + 1):
+        for row in range(len(entries) + 1):
 
             #calculates coordinates for x and y for each cell for drawing rectangles
             x1 = column * self.cellwidth
