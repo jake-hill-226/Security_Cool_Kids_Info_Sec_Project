@@ -1,7 +1,7 @@
 # Security_Cool_Kids_Info_Sec_Project
-###CSE 4471 Security application project and home of the Security Cool Kids
+### CSE 4471 Security application project and home of the Security Cool Kids
 
-####CarrotKey
+#### CarrotKey
 
 CarrotKey is a python based password vault that persists on the user's local disk.
 In this application, users can access their account passwords for various sites from
@@ -15,9 +15,9 @@ To make matters more simple for our users we currently have in beta an auto-pass
 works for their Google and Facebook accounts. 
 
 
-####Installation and Requirements
+#### Installation and Requirements
 
-#####Requirements
+##### Requirements
 - Python=2.7
 - pip>=9.0.1
 - Chrome webdriver (optional if you don't want to participate in the auto-pass-changer beta)
@@ -26,33 +26,33 @@ works for their Google and Facebook accounts.
 	  Then add the webdriver download into you environment PATH variable using the
 	  respective method of you OS.
 
-#####Installation
+##### Installation
 - In a terminal navigate to the root project directory
 - In your terminal enter
 	$ pip -r requirements.txt
 - Accept all packages to be installed
 
 
-####Running The Application
+#### Running The Application
 
-#####CarrotKey GUI (WIP)
+##### CarrotKey GUI (WIP)
 
-#####From the command-line
+##### From the command-line
 - from your terminal navigate to the project src folder
 - enter the command
 	$ python login_gui.py
 
-#####From a double-click
+##### From a double-click
 - from your terminal navigate to the project src folder
 - enter the command chmod u=x login_gui.py
 - Now open you file explorer and find the login_gui.py file
   and double-click on the script
 - Note you may also create a shortcut to this file if you would like
 
-####GitHub URL
+#### GitHub URL
 https://github.com/jake-hill-226/Security_Cool_Kids_Info_Sec_Project
 
-##Contributors
+## Contributors
 - Anastasia Bourlas
 - Jake Hill
 - Phaedra Paul
