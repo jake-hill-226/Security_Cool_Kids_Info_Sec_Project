@@ -1,6 +1,8 @@
 # Security_Cool_Kids_Info_Sec_Project
 ### CSE 4471 Security application project and home of the Security Cool Kids
 
+![Corpral Carrot](https://github.com/jake-hill-226/Security_Cool_Kids_Info_Sec_Project/blob/master/assets/corpCarrot.gif)
+
 #### CarrotKey
 
 CarrotKey is a python based password vault that persists on the user's local disk.
